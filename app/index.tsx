@@ -1,54 +1,26 @@
-import { SectionListExample } from "@/components/SectionListExample";
-import { useState } from "react";
-import { StyleSheet, Switch, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {Text, View, StyleSheet} from 'react-native';
+import News from '../components/News';
+import App from '../components/Scrollview';
+import Switch from '../components/Switch'
+import ToggleComponent from '../components/Toggle';
 
-// import { PizzaTranslator } from "@/components/PizzaTranslator";
-// import { FlatListExample } from "@/components/FlatListExample";
 
 export default function Index() {
-  let MyComponent;
-  const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
-  if (isEnabled) {
-    // MyComponent = <ScrollViewApp />;
-    // MyComponent = <FlatListExample />;
-    MyComponent = <SectionListExample />;
-  } else {
-    MyComponent = (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "flex-start",
-          alignItems: "center",
-          marginTop: 25,
-        }}
-      >
-        <Text style={styles.title}>Olá Turma!</Text>
-        {/* <PizzaTranslator /> */}
-      </View>
+    return (
+        <>
+            <News />
+            <App />
+            <Switch />
+            <ToggleComponent />
+        </>
     );
-  }
-  return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={{ flex: 1, alignItems: "center" }}>
-        <Switch
-          trackColor={{ false: "#767577", true: "#81b0ff" }}
-          thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
-          ios_backgroundColor="#3e3e3e"
-          onValueChange={toggleSwitch}
-          value={isEnabled}
-        />
-        {MyComponent}
-      </View>
-    </SafeAreaView>
-  );
 }
 
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 32,
-    fontWeight: "bold",
-    color: "blue",
-  },
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#f5f5f5',
+    },
 });
