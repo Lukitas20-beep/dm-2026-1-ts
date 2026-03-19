@@ -1,54 +1,134 @@
-import { SectionListExample } from "@/components/SectionListExample";
-import { useState } from "react";
-import { StyleSheet, Switch, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  Image,
+  TouchableOpacity,
+  Alert,
+  StyleSheet
+} from 'react-native';
 
-// import { PizzaTranslator } from "@/components/PizzaTranslator";
-// import { FlatListExample } from "@/components/FlatListExample";
+export default function HomeScreen() {
+  const [nome, setNome] = useState('');
+  const [imagemIndex, setImagemIndex] = useState(0);
 
-export default function Index() {
-  let MyComponent;
-  const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
-  if (isEnabled) {
-    // MyComponent = <ScrollViewApp />;
-    // MyComponent = <FlatListExample />;
-    MyComponent = <SectionListExample />;
-  } else {
-    MyComponent = (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "flex-start",
-          alignItems: "center",
-          marginTop: 25,
-        }}
-      >
-        <Text style={styles.title}>Olá Turma!</Text>
-        {/* <PizzaTranslator /> */}
-      </View>
-    );
-  }
+  const imagens = [
+    'https://i.pravatar.cc/300?img=1',
+    'https://i.pravatar.cc/300?img=2'
+  ];
+
+  const alternarImagem = () => {
+    setImagemIndex(imagemIndex === 0 ? 1 : 0);
+  };
+
+  const salvarPerfil = () => {
+    Alert.alert('Perfil salvo!', `Nome: ${nome}`);
+  };
+
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={{ flex: 1, alignItems: "center" }}>
-        <Switch
-          trackColor={{ false: "#767577", true: "#81b0ff" }}
-          thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
-          ios_backgroundColor="#3e3e3e"
-          onValueChange={toggleSwitch}
-          value={isEnabled}
+    <View style={styles.container}>
+
+      {/* TOPO */}
+      <View style={styles.topo}>
+        <Image
+          source={{ uri: imagens[imagemIndex] }}
+          style={styles.imagem}
         />
-        {MyComponent}
+
+        <TouchableOpacity style={styles.botaoSecundario} onPress={alternarImagem}>
+          <Text style={styles.textoBotao}>Trocar Foto</Text>
+        </TouchableOpacity>
       </View>
-    </SafeAreaView>
+
+      {/* MEIO */}
+      <View style={styles.meio}>
+        <TextInput
+          style={styles.input}
+          placeholder="Digite seu nome"
+          value={nome}
+          onChangeText={setNome}
+        />
+      </View>
+
+      {/* BASE */}
+      <View style={styles.base}>
+        <TouchableOpacity style={styles.botaoPrincipal} onPress={salvarPerfil}>
+          <Text style={styles.textoBotaoPrincipal}>Salvar</Text>
+        </TouchableOpacity>
+      </View>
+
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 32,
-    fontWeight: "bold",
-    color: "blue",
+  container: {
+    flex: 1,
+    backgroundColor: '#0f172a',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 40,
+    paddingHorizontal: 20
   },
+
+  topo: {
+    alignItems: 'center',
+    gap: 10
+  },
+
+  imagem: {
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+    borderWidth: 3,
+    borderColor: '#38bdf8'
+  },
+
+  meio: {
+    width: '100%'
+  },
+
+  input: {
+    width: '100%',
+    height: 55,
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    paddingHorizontal: 15,
+    fontSize: 16,
+    borderWidth: 2,
+    borderColor: '#38bdf8'
+  },
+
+  base: {
+    width: '100%'
+  },
+
+  botaoPrincipal: {
+    width: '100%',
+    height: 60,
+    backgroundColor: '#22c55e',
+    borderRadius: 12,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+
+  botaoSecundario: {
+    marginTop: 10,
+    backgroundColor: '#334155',
+    paddingVertical: 8,
+    paddingHorizontal: 15,
+    borderRadius: 8
+  },
+
+  textoBotao: {
+    color: '#fff',
+    fontSize: 14
+  },
+
+  textoBotaoPrincipal: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold'
+  }
 });
