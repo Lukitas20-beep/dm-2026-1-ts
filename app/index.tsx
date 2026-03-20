@@ -1,12 +1,11 @@
-import { SectionListExample } from "@/components/SectionListExample";
+// import { SectionListExample } from "@/components/SectionListExample";
 import { ProfileScreen } from "@/screens/ProfileScreen";
 import { UpdateScreen } from "@/screens/UpdateScreen";
 import { useState } from "react";
 import { Button, StyleSheet, Switch, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-// import { PizzaTranslator } from "@/components/PizzaTranslator";
-// import { FlatListExample } from "@/components/FlatListExample";
+import { FlatListExample } from "@/components/FlatListExample";
 
 export default function Index() {
   let MyComponent;
@@ -25,8 +24,8 @@ export default function Index() {
 
   if (isEnabled) {
     // MyComponent = <ScrollViewApp />;
-    // MyComponent = <FlatListExample />;
-    MyComponent = <SectionListExample />;
+    MyComponent = <FlatListExample />;
+    // MyComponent = <SectionListExample />;
   } else {
     MyComponent = (
       <View
