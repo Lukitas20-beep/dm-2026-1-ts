@@ -1,4 +1,5 @@
 import { FlatList, StyleSheet, View } from "react-native";
+import { useState } from "react";
 
 import { FlatListItem } from "@/components/FlatListItem";
 
@@ -23,12 +24,31 @@ const styles = StyleSheet.create({
   },
 });
 
-export const FlatListExample = () => (
-  <View style={styles.container}>
-    <FlatList
-      data={DATA}
-      renderItem={({ item }) => <FlatListItem item={item} />}
-      keyExtractor={(item) => item.id}
-    />
-  </View>
-);
+export const FlatListExample = () => {
+  const [selectedId, setSelectedId] = useState<string>();
+
+  const renderItem = ({ item }: { item: (typeof DATA)[0] }) => {
+    const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#f9c2ff";
+    const textColor = item.id === selectedId ? "white" : "black";
+
+    return (
+      <FlatListItem
+        item={item}
+        onPress={() => setSelectedId(item.id)}
+        backgroundColor={backgroundColor}
+        textColor={textColor}
+      />
+    );
+  };
+
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={DATA}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+        extraData={selectedId}
+      />
+    </View>
+  );
+};
