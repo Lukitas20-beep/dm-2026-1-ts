@@ -1,26 +1,64 @@
-type SectionListData = {
-  title: string;
-  data: string[];
+import axios from "axios";
+
+const BASE_URL = "http://192.168.1.2:5000/tasks"; 
+
+export interface TaskItem {
+  _id: string;
+  text: string;
+  completed: boolean;
+  dueDate?: Date;
+}
+
+export const getAllTasks = async (setTasks: Function) => {
+  try {
+    const res = await axios.get(`${BASE_URL}/`);
+    setTasks(res.data);
+  } catch (err) {
+    console.log("Erro ao buscar:", err);
+  }
 };
 
-export const transformListToSectionList = (
-  data: string[],
-): SectionListData[] => {
-  const transformedDataMap: Record<string, string[]> = {};
-  data.forEach((name) => {
-    const firstLetter = name[0];
-    if (!transformedDataMap[firstLetter]) {
-      transformedDataMap[firstLetter] = [];
-    }
-    transformedDataMap[firstLetter].push(name);
-  });
+export const addTask = async (task: any, setTasks: Function) => {
+  try {
+    const res = await axios.post(`${BASE_URL}/save`, task);
+    setTasks((prev: TaskItem[]) => [...prev, res.data]);
+  } catch (err) {
+    console.log("Erro ao adicionar:", err);
+  }
+};
 
-  const transformedData = Object.keys(transformedDataMap).map((firstLetter) => {
-    return {
-      title: firstLetter,
-      data: transformedDataMap[firstLetter],
-    };
-  });
+export const updateTask = async (
+  id: string,
+  task: any,
+  setTasks: Function
+) => {
+  try {
+    const res = await axios.post(`${BASE_URL}/update`, {
+      _id: id,
+      ...task
+    });
 
-  return transformedData;
+    setTasks((prev: TaskItem[]) =>
+      prev.map((item) =>
+        item._id === id ? res.data : item
+      )
+    );
+  } catch (err) {
+    console.log("Erro ao atualizar:", err);
+  }
+};
+
+export const deleteTask = async (
+  id: string,
+  setTasks: Function
+) => {
+  try {
+    await axios.post(`${BASE_URL}/delete`, { _id: id });
+
+    setTasks((prev: TaskItem[]) =>
+      prev.filter((item) => item._id !== id)
+    );
+  } catch (err) {
+    console.log("Erro ao deletar:", err);
+  }
 };
